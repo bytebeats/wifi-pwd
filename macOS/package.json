@@ -1,0 +1,10 @@
+{
+  "name": "wifi-pwd",
+  "version": "0.0.1",
+  "description": "How to know your connected wifi password instantly? Try me!",
+  "global": "1",
+  "install": "install -b wifi-pwd.sh ${PREFIX:-/usr/local}/bin/wifi-pwd",
+  "scripts": [
+    "wifi-pwd.sh"
+  ]
+}
