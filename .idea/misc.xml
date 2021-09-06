@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="uwmbaf3v" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="IntelliJ IDEA Community Edition IC-202.6397.94" project-jdk-type="IDEA JDK" />
+  <component name="ScalaSbtSettings">
+    <option name="customVMEnabled" value="true" />
+    <option name="customVMPath" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home" />
+  </component>
+</project>
