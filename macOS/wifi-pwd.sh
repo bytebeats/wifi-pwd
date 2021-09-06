@@ -5,6 +5,10 @@ version="0.0.1"
 # locate airport(1) on macOS
 airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 
+if [ "$verbose" ]; then
+  echo "airport: $airport"
+fi
+
 if [ ! -f $airport ]; then
   echo "Error: can't find \`airport\` CLI program at \"$airport\""
   exit 1
@@ -17,6 +21,10 @@ else
     verbose=
 fi
 
+if [ "$verbose" ]; then
+  echo "verbose: $verbose"
+fi
+
 # how to use
 
 usage() {
@@ -27,7 +35,6 @@ usage() {
     -v, --version     Output version
     -h, --help        This message
     --                End of options
-
 EOF
 }
 
@@ -53,12 +60,16 @@ if [ "$1" = "--" ]; then shift; fi
 
 # how to merge args for SSIDs with space
 
-args="$."
+args="$@"
+
+if [ "$verbose" ]; then
+  echo "args: $args"
+fi
 
 # check user-provided ssid
 
 if [ "" != "$args" ]; then
-    ssid="$."
+    ssid="$@"
 else
   # obtain ssid
   ssid="$($airport -I | awk '/ SSID/ {print substr($0, index($0, $2))}')"
@@ -68,26 +79,37 @@ else
   fi
 fi
 
+if [ "$verbose" ]; then
+  echo "ssid: $ssid"
+fi
+
 # warn user about keychain dialog
 if [ "$verbose" ]; then
-    echo ""
-    echo "-033[90m ... getting password for \"$ssid\". \033[39m"
-    echo "-033[90m ... keychain prompt incoming. \033[39m"
+    echo "\033[90m ... getting password for \"$ssid\". \033[39m"
+    echo "\033[90m ... keychain prompt incoming. \033[39m"
 fi
 
 sleep 2
 
 # how to access keychain
 # from: http://blog.macromates.com/2006/keychain-access-from-shell/
-password="$(security find-generic-password -D 'AirPort network password' -ga \"$ssid\" 2>$1 >/dev/null)"
+password="$(security find-generic-password -D 'AirPort network password' -ga \"$ssid\" 2>&1 >/dev/null)"
 
-if [ "$password" =~ "could" ]; then
+if [ "$verbose" ]; then
+  echo "password: $password"
+fi
+
+if [[ "$password" =~ "could" ]]; then
     echo "Error: could not find SSID \"$ssid\"" >&2
     exit 1
 fi
 
 # clear password
 password=$(echo "$password" | sed -e "s/^.*\"\(.*\)\".*$/\1/")
+
+if [ "$verbose" ]; then
+  echo "password: $password"
+fi
 
 if [ "" = "$password" ]; then
     echo "Error: could not get password. Did you store your keychain credentials?" >&2
