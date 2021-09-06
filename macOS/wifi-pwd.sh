@@ -6,7 +6,7 @@ version="0.0.1"
 airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 
 if [ "$verbose" ]; then
-  echo "airport: $airport"
+  echo "airport: $airport" >&2
 fi
 
 if [ ! -f $airport ]; then
@@ -22,7 +22,7 @@ else
 fi
 
 if [ "$verbose" ]; then
-  echo "verbose: $verbose"
+  echo "verbose: $verbose" >&2
 fi
 
 # how to use
@@ -63,7 +63,7 @@ if [ "$1" = "--" ]; then shift; fi
 args="$@"
 
 if [ "$verbose" ]; then
-  echo "args: $args"
+  echo "args: $args" >&2
 fi
 
 # check user-provided ssid
@@ -80,7 +80,7 @@ else
 fi
 
 if [ "$verbose" ]; then
-  echo "ssid: $ssid"
+  echo "ssid: $ssid" >&2
 fi
 
 # warn user about keychain dialog
@@ -96,7 +96,7 @@ sleep 2
 password="$(security find-generic-password -D 'AirPort network password' -ga \"$ssid\" 2>&1 >/dev/null)"
 
 if [ "$verbose" ]; then
-  echo "password: $password"
+  echo "password: $password" >&2
 fi
 
 if [[ "$password" =~ "could" ]]; then
@@ -108,7 +108,7 @@ fi
 password=$(echo "$password" | sed -e "s/^.*\"\(.*\)\".*$/\1/")
 
 if [ "$verbose" ]; then
-  echo "password: $password"
+  echo "password: $password" >&2
 fi
 
 if [ "" = "$password" ]; then
